@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>石磊里大嶺頂土地公 三週年慶 | 互動資訊網</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap");
+
+      body {
+        font-family: "Noto Sans TC", sans-serif;
+        background-color: #fcfbf7; /* Warm off-white */
+        color: #4a0404; /* Deep Red */
+      }
+
+      h1,
+      h2,
+      h3,
+      .serif {
+        font-family: "Noto Serif TC", serif;
+      }
+
+      /* Chart Container Styling Requirements */
+      .chart-container {
+        position: relative;
+        width: 100%;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+        height: 300px;
+        max-height: 400px;
+      }
+
+      @media (min-width: 768px) {
+        .chart-container {
+          height: 350px;
+        }
+      }
+
+      .gold-gradient {
+        background: linear-gradient(
+          135deg,
+          #bf953f,
+          #fcf6ba,
+          #b38728,
+          #fbf5b7,
+          #aa771c
+        );
+      }
+
+      .card-shadow {
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+          0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        transition: transform 0.2s;
+      }
+
+      .card-shadow:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+          0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      }
+    </style>
+    <!-- Chosen Palette: Traditional Festive - Deep Red (#4a0404) for authority/tradition, Gold (#b38728) for prosperity, and Warm Cream (#fcfbf7) for background readability. -->
+    <!-- Application Structure Plan: 
+         1. Hero Section: Immediate visual impact with event title and a dynamic countdown timer to build anticipation (User Goal: When is it?).
+         2. Event Essentials Grid: Breaking down the date (Solar/Lunar) and Invitation into clear cards.
+         3. Feast Gallery: Visual cards for the food items (Pork, Rice Noodles, Mochi) to entice attendance.
+         4. Donation & Impact Analysis: The core interactive section. Transforming the "Donation Purpose" text into a Chart.js Doughnut chart showing how funds are categorized. Interactive buttons for "Suggested Amounts" allow users to click a value and see a simulated "Thank You" receipt/impact message.
+         5. Footer: Closing blessings and location context.
+         Why: This structure moves from "Awareness" (Header) to "Interest" (Food) to "Action" (Donation), guiding the user logically through the poster's content.
+    -->
+    <!-- Visualization & Content Choices:
+         1. Countdown Timer (JS): Goal -> Urgency/Inform. Viz -> Dynamic Text. Justification -> Static dates are easily missed; a ticking timer draws attention.
+         2. Donation Purpose Chart (Chart.js): Goal -> Transparency/Organize. Viz -> Doughnut Chart. Interaction -> Hover for details. Justification -> The text lists 3 abstract purposes; a chart makes the "Constitution of Funds" concrete and visual.
+         3. Interactive Donation Tiers (JS/HTML): Goal -> Engagement. Viz -> Clickable Buttons. Interaction -> Updates a "Selected Contribution" display. Justification -> Gamifies the donation suggestion list, making it feel like a transaction UI rather than just a list of numbers.
+         4. Food Icons (FontAwesome): Goal -> Visual Appeal. Method -> CSS/Fonts. Confirming NO SVG/Mermaid.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+  </head>
+  <body class="flex flex-col min-h-screen">
+    <!-- Hero Section -->
+    <header class="relative bg-red-900 text-yellow-50 overflow-hidden">
+      <div class="absolute inset-0 opacity-10 pattern-dots"></div>
+      <div class="container mx-auto px-4 py-12 text-center relative z-10">
+        <div class="inline-block border-y-2 border-yellow-500 py-2 mb-4">
+          <p
+            class="text-yellow-400 font-bold tracking-widest text-sm uppercase"
+          >
+            EST. 115 ROC
+          </p>
+        </div>
+        <h1
+          class="text-4xl md:text-6xl font-bold mb-4 leading-tight text-shadow-lg"
+        >
+          石磊里大嶺頂土地公<br />
+          <span class="text-yellow-400">三週年慶</span>
+        </h1>
+        <p class="text-xl md:text-2xl text-red-100 font-light mb-8 serif">
+          祈福保庇 · 闔家平安
+        </p>
+
+        <!-- Countdown Timer -->
+        <div
+          class="bg-red-800 bg-opacity-50 rounded-lg p-6 max-w-2xl mx-auto backdrop-blur-sm border border-red-700"
+        >
+          <p class="text-sm text-red-200 mb-2 uppercase tracking-wide">
+            距離吉時還有
+          </p>
+          <div
+            id="countdown"
+            class="grid grid-cols-4 gap-2 md:gap-4 text-center text-yellow-500"
+          >
+            <div>
+              <span class="text-3xl md:text-5xl font-bold block" id="days"
+                >00</span
+              ><span class="text-xs text-red-200">天</span>
+            </div>
+            <div>
+              <span class="text-3xl md:text-5xl font-bold block" id="hours"
+                >00</span
+              ><span class="text-xs text-red-200">時</span>
+            </div>
+            <div>
+              <span class="text-3xl md:text-5xl font-bold block" id="minutes"
+                >00</span
+              ><span class="text-xs text-red-200">分</span>
+            </div>
+            <div>
+              <span class="text-3xl md:text-5xl font-bold block" id="seconds"
+                >00</span
+              ><span class="text-xs text-red-200">秒</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow container mx-auto px-4 py-12 space-y-16 max-w-5xl">
+      <!-- Intro / Event Details -->
+      <section>
+        <div class="text-center mb-10 max-w-2xl mx-auto">
+          <h2
+            class="text-3xl font-bold text-red-900 mb-4 border-b-4 border-yellow-500 inline-block pb-1"
+          >
+            活動資訊
+          </h2>
+          <p class="text-gray-600 mt-4 leading-relaxed">
+            本應用程式旨在提供「石磊里大嶺頂土地公 三週年慶」的數位化資訊指引。
+            在此您可以查看詳細的活動時間、當日平安餐點內容，以及了解廟宇維護資金的具體用途與捐款方式。
+            敬邀善男信女共襄盛舉，同沐神恩。
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Date Card -->
+          <div
+            class="bg-white rounded-xl p-6 card-shadow border-l-8 border-red-800 flex items-center"
+          >
+            <div class="bg-red-50 rounded-full p-4 mr-4 text-red-800">
+              <i class="fas fa-calendar-alt text-2xl"></i>
+            </div>
+            <div>
+              <h3 class="text-lg font-bold text-gray-800">國曆日期</h3>
+              <p class="text-2xl font-bold text-red-900">115 年 1 月 17 日</p>
+              <p class="text-gray-500 font-medium">星期六</p>
+            </div>
+          </div>
+          <!-- Lunar Date Card -->
+          <div
+            class="bg-white rounded-xl p-6 card-shadow border-l-8 border-yellow-600 flex items-center"
+          >
+            <div class="bg-yellow-50 rounded-full p-4 mr-4 text-yellow-700">
+              <i class="fas fa-moon text-2xl"></i>
+            </div>
+            <div>
+              <h3 class="text-lg font-bold text-gray-800">農曆日期</h3>
+              <p class="text-2xl font-bold text-yellow-800">
+                乙巳年 11 月 29 日
+              </p>
+              <p class="text-gray-500 font-medium">歲次 乙巳</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Feast Section -->
+      <section
+        class="bg-orange-50 rounded-3xl p-8 md:p-12 relative overflow-hidden"
+      >
+        <div
+          class="absolute top-0 right-0 text-orange-200 opacity-20 -mt-10 -mr-10"
+        >
+          <i class="fas fa-utensils text-9xl"></i>
+        </div>
+
+        <div class="relative z-10">
+          <div class="text-center mb-10">
+            <h2 class="text-3xl font-bold text-red-900 mb-2">🍽 平安饗宴</h2>
+            <p class="text-gray-600">
+              現場備有豐盛客家特色美食，歡迎大眾享用，吃平安、長智慧。
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Food Item 1 -->
+            <div
+              class="bg-white p-6 rounded-xl text-center card-shadow group hover:bg-red-800 hover:text-white transition-colors duration-300"
+            >
+              <div
+                class="w-16 h-16 mx-auto bg-orange-100 rounded-full flex items-center justify-center mb-4 group-hover:bg-white"
+              >
+                <i
+                  class="fas fa-drumstick-bite text-orange-600 text-2xl group-hover:text-red-800"
+                ></i>
+              </div>
+              <h3 class="text-xl font-bold mb-2">控肉</h3>
+              <p class="text-sm opacity-80">
+                香滷入味，入口即化<br />傳統客家風味
+              </p>
+            </div>
+
+            <!-- Food Item 2 -->
+            <div
+              class="bg-white p-6 rounded-xl text-center card-shadow group hover:bg-red-800 hover:text-white transition-colors duration-300"
+            >
+              <div
+                class="w-16 h-16 mx-auto bg-orange-100 rounded-full flex items-center justify-center mb-4 group-hover:bg-white"
+              >
+                <i
+                  class="fas fa-bowl-rice text-orange-600 text-2xl group-hover:text-red-800"
+                ></i>
+              </div>
+              <h3 class="text-xl font-bold mb-2">米粉</h3>
+              <p class="text-sm opacity-80">Q彈爽口，大鍋拌炒<br />香氣四溢</p>
+            </div>
+
+            <!-- Food Item 3 -->
+            <div
+              class="bg-white p-6 rounded-xl text-center card-shadow group hover:bg-red-800 hover:text-white transition-colors duration-300"
+            >
+              <div
+                class="w-16 h-16 mx-auto bg-orange-100 rounded-full flex items-center justify-center mb-4 group-hover:bg-white"
+              >
+                <i
+                  class="fas fa-cookie text-orange-600 text-2xl group-hover:text-red-800"
+                ></i>
+              </div>
+              <h3 class="text-xl font-bold mb-2">客家麻糬</h3>
+              <p class="text-sm opacity-80">
+                軟糯香甜，沾裹花生粉<br />象徵圓滿
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Donation & Impact Section -->
+      <section>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+          <!-- Left: Interactive Chart -->
+          <div>
+            <h2 class="text-3xl font-bold text-red-900 mb-4 flex items-center">
+              <i class="fas fa-hand-holding-heart mr-3 text-yellow-600"></i>
+              功德護持與用途
+            </h2>
+            <p class="text-gray-600 mb-6">
+              為維護廟宇長久運作，您的隨喜護持將直接用於以下三大核心領域。
+              下方圖表顯示了廟宇維運的資源分配比例（示意圖）。
+            </p>
+
+            <div
+              class="bg-white p-4 rounded-xl card-shadow border border-gray-100"
+            >
+              <div class="chart-container">
+                <canvas id="donationChart"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Interactive Donation Calculator -->
+          <div class="bg-red-50 p-8 rounded-2xl border border-red-100">
+            <h3 class="text-xl font-bold text-red-900 mb-4">建議功德金</h3>
+
+            <div class="grid grid-cols-2 gap-4 mb-8">
+              <button
+                onclick="updateDonation(10000)"
+                class="donation-btn py-3 px-4 bg-white border-2 border-red-200 rounded-lg text-red-800 font-bold hover:bg-red-800 hover:text-white hover:border-red-800 transition-all focus:ring-2 focus:ring-yellow-400"
+              >
+                $10,000
+              </button>
+              <button
+                onclick="updateDonation(6000)"
+                class="donation-btn py-3 px-4 bg-white border-2 border-red-200 rounded-lg text-red-800 font-bold hover:bg-red-800 hover:text-white hover:border-red-800 transition-all focus:ring-2 focus:ring-yellow-400"
+              >
+                $6,000
+              </button>
+              <button
+                onclick="updateDonation(2000)"
+                class="donation-btn py-3 px-4 bg-white border-2 border-red-200 rounded-lg text-red-800 font-bold hover:bg-red-800 hover:text-white hover:border-red-800 transition-all focus:ring-2 focus:ring-yellow-400"
+              >
+                $2,000
+              </button>
+              <button
+                onclick="updateDonation(500)"
+                class="donation-btn py-3 px-4 bg-white border-2 border-red-200 rounded-lg text-red-800 font-bold hover:bg-red-800 hover:text-white hover:border-red-800 transition-all focus:ring-2 focus:ring-yellow-400"
+              >
+                $500
+              </button>
+            </div>
+
+            <!-- Dynamic Feedback Area -->
+            <div
+              id="donation-feedback"
+              class="hidden animate-fade-in bg-white p-6 rounded-lg border-l-4 border-yellow-500 shadow-sm"
+            >
+              <div class="flex items-center mb-2">
+                <i class="fas fa-check-circle text-green-500 text-xl mr-2"></i>
+                <h4 class="font-bold text-gray-800">
+                  隨喜功德
+                  <span id="selected-amount" class="text-red-600"></span> 元
+                </h4>
+              </div>
+              <p class="text-gray-600 text-sm">
+                感謝您！這筆款項將協助：<br />
+                <span class="font-semibold text-red-800">1. 廟宇基礎設施</span
+                ><br />
+                <span class="font-semibold text-yellow-700"
+                  >2. 點燈供奉燃料費</span
+                ><br />
+                <span class="font-semibold text-blue-700"
+                  >3. 環境清潔與維護</span
+                >
+              </p>
+              <div class="mt-4 pt-4 border-t border-gray-100 text-center">
+                <span
+                  class="inline-block bg-red-100 text-red-800 text-xs px-2 py-1 rounded"
+                  >功德無量</span
+                >
+              </div>
+            </div>
+
+            <div id="default-msg" class="text-center text-gray-400 py-4">
+              <i class="fas fa-heart text-3xl mb-2 opacity-30"></i>
+              <p>隨喜樂捐，金額不拘</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Call to Action / Invitation -->
+      <section class="text-center py-12">
+        <div
+          class="inline-block p-8 border-4 border-double border-yellow-500 rounded-lg bg-red-900 text-white max-w-3xl"
+        >
+          <h2 class="text-2xl md:text-3xl font-bold mb-4 serif">
+            石磊里大嶺頂土地公 敬邀
+          </h2>
+          <div class="w-16 h-1 bg-yellow-500 mx-auto mb-6"></div>
+          <p class="text-lg md:text-xl leading-relaxed opacity-90 mb-4">
+            祈願風調雨順、家家平安吉祥
+          </p>
+          <p class="text-yellow-400 font-bold text-xl">功德無量</p>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer
+      class="bg-gray-800 text-gray-400 py-8 text-center border-t border-yellow-600"
+    >
+      <div class="container mx-auto px-4">
+        <p class="mb-2">© 115 石磊里大嶺頂土地公廟管理委員會</p>
+        <p class="text-sm opacity-60">
+          設計僅供互動展示，實際活動詳情以廟方公告為準。
+        </p>
+      </div>
+    </footer>
+
+    <script>
+      // --- 1. Countdown Timer Logic ---
+      function updateCountdown() {
+        // Target Date: 115 ROC = 2026 AD, Jan 17, Saturday
+        const targetDate = new Date("2026-01-17T09:00:00").getTime();
+        const now = new Date().getTime();
+        const distance = targetDate - now;
+
+        if (distance < 0) {
+          document.getElementById("countdown").innerHTML =
+            "<div class='col-span-4 text-2xl'>活動圓滿結束</div>";
+          return;
+        }
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor(
+          (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+        );
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        document.getElementById("days").innerText = String(days).padStart(
+          2,
+          "0"
+        );
+        document.getElementById("hours").innerText = String(hours).padStart(
+          2,
+          "0"
+        );
+        document.getElementById("minutes").innerText = String(minutes).padStart(
+          2,
+          "0"
+        );
+        document.getElementById("seconds").innerText = String(seconds).padStart(
+          2,
+          "0"
+        );
+      }
+
+      setInterval(updateCountdown, 1000);
+      updateCountdown();
+
+      // --- 2. Chart.js Initialization for "Donation Purpose" ---
+      // Context: Visualizing how donations are used based on text: "點燈供奉", "環境清潔", "基礎設施"
+      const ctx = document.getElementById("donationChart").getContext("2d");
+
+      const donationChart = new Chart(ctx, {
+        type: "doughnut",
+        data: {
+          labels: ["廟宇基礎設施維護", "環境清潔維護", "點燈供奉"],
+          datasets: [
+            {
+              label: "資金用途分佈 (示意)",
+              data: [45, 25, 30], // Hypothetical distribution for visualization
+              backgroundColor: [
+                "#7f1d1d", // Dark Red (Infrastructure - Heavy/Base)
+                "#1e40af", // Blue (Cleaning - Water/Clean)
+                "#ca8a04", // Gold (Lighting - Light)
+              ],
+              borderWidth: 2,
+              borderColor: "#ffffff",
+              hoverOffset: 10,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: "bottom",
+              labels: {
+                font: {
+                  family: "'Noto Sans TC', sans-serif",
+                  size: 14,
+                },
+                padding: 20,
+              },
+            },
+            tooltip: {
+              callbacks: {
+                label: function (context) {
+                  return " " + context.label + ": " + context.raw + "%";
+                },
+              },
+              backgroundColor: "rgba(74, 4, 4, 0.9)",
+              padding: 12,
+            },
+            title: {
+              display: true,
+              text: "護持善款用途分佈",
+              font: {
+                size: 16,
+                family: "'Noto Serif TC', serif",
+              },
+              color: "#4a0404",
+              padding: {
+                top: 10,
+                bottom: 20,
+              },
+            },
+          },
+          cutout: "60%",
+          animation: {
+            animateScale: true,
+            animateRotate: true,
+          },
+        },
+      });
+
+      // --- 3. Donation Interactive Logic ---
+      function updateDonation(amount) {
+        // 1. Update Text
+        const feedbackBox = document.getElementById("donation-feedback");
+        const defaultMsg = document.getElementById("default-msg");
+        const amountSpan = document.getElementById("selected-amount");
+
+        defaultMsg.classList.add("hidden");
+        feedbackBox.classList.remove("hidden");
+
+        // Format number with commas
+        amountSpan.innerText = amount.toLocaleString();
+
+        // 2. Animate Chart Highlight
+        // Reset colors
+        const baseColors = ["#7f1d1d", "#1e40af", "#ca8a04"];
+        donationChart.data.datasets[0].backgroundColor = baseColors.map(
+          (c) => c
+        ); // copy
+
+        // Highlight specific segments slightly based on amount just for effect
+        // (In reality all money helps all, but we simulate impact)
+        if (amount >= 6000) {
+          // Large donations highlight Infrastructure
+          donationChart.data.datasets[0].backgroundColor[0] = "#991b1b"; // Brighter red
+        } else if (amount >= 2000) {
+          // Medium highlight Cleaning
+          donationChart.data.datasets[0].backgroundColor[1] = "#2563eb"; // Brighter blue
+        } else {
+          // Small highlight Lighting
+          donationChart.data.datasets[0].backgroundColor[2] = "#eab308"; // Brighter yellow
+        }
+
+        donationChart.update();
+
+        // 3. Scroll hint if on mobile
+        if (window.innerWidth < 768) {
+          feedbackBox.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        }
+      }
+    </script>
+  </body>
+</html>
