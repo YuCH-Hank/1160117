@@ -3,330 +3,270 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>石磊里大嶺頂土地公 三週年慶海報</title>
-
-    <!-- Tailwind -->
+    <title>石磊里大嶺頂土地公 三週年慶海報 (A3版)</title>
     <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- Icons -->
     <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600;700;900&family=Zhi+Mang+Xing&display=swap"
       rel="stylesheet"
     />
 
     <style>
-      /* 字體 */
-      @import url("https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@700;900&family=Noto+Sans+TC:wght@400;700&display=swap");
-
-      :root {
-        --poster-red: #9a031e;
-        --poster-gold: #ffd700;
-        --poster-gold-deep: #bf953f;
-      }
-
-      html,
-      body {
-        height: 100%;
-      }
-
-      body {
-        margin: 0;
-        font-family: "Noto Sans TC", system-ui, -apple-system,
-          BlinkMacSystemFont, "Segoe UI", sans-serif;
-        background-color: #f1d2a9; /* 純色底，淡米金色 */
-      }
-
-      .serif-bold {
-        font-family: "Noto Serif TC", "Noto Sans TC", system-ui, serif;
-        font-weight: 900;
-      }
-
-      .gold-text {
-        color: var(--poster-gold);
-        text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
-      }
-
-      /* 螢幕預覽用：適合畫面顯示 */
-      .poster-container {
-        max-width: 900px;
-        width: 92%;
-        margin: 2.5rem auto;
-        min-height: calc(100vh - 5rem);
-        background-color: var(--poster-red); /* 純色紅背景 */
-        color: #fff;
-        position: relative;
-        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
-        border-radius: 1.5rem;
-        overflow: hidden;
-      }
-
-      /* 外框雙層金邊 */
-      .poster-frame {
-        position: absolute;
-        inset: 1.25rem;
-        border-radius: 1.25rem;
-        border: 8px solid var(--poster-gold-deep);
-        box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.05) inset;
-        pointer-events: none;
-      }
-
-      .poster-inner {
-        position: relative;
-        padding: 2.5rem 1.75rem 3rem;
-      }
-
-      @media (min-width: 768px) {
-        .poster-inner {
-          padding: 3rem 3.5rem 3.5rem;
-        }
-      }
-
-      .card-bg {
-        background-color: rgba(255, 255, 255, 0.96);
-        color: #4a0404;
-      }
-
-      .card-title {
-        letter-spacing: 0.2em;
-      }
-
-      .section-divider {
-        height: 1px;
-        background: linear-gradient(
-          to right,
-          transparent,
-          rgba(255, 215, 0, 0.8),
-          transparent
-        );
-      }
-
-      /* ===================== */
-      /*   A3 印刷專用設定     */
-      /* ===================== */
-
-      /* 告訴列印：使用 A3 紙張、無邊界 */
+      /* 設定 A3 比例與列印樣式 */
       @page {
         size: A3 portrait;
         margin: 0;
       }
 
-      @media print {
-        html,
-        body {
-          width: 297mm;
-          height: 420mm;
-          margin: 0;
-        }
+      :root {
+        --font-title: "Zhi Mang Xing", cursive; /* 書法標題 */
+        --font-body: "Noto Serif TC", serif; /* 易讀宋體 */
+        --color-gold: #fcd34d;
+        --color-red-bg: #8b0000;
+      }
 
-        body {
-          background-color: #f1d2a9;
-          -webkit-print-color-adjust: exact;
-          print-color-adjust: exact;
-        }
+      body {
+        background-color: #333;
+        font-family: var(--font-body);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+        padding: 20px;
+      }
 
-        /* 讓整張海報剛好填滿整張 A3 */
-        .poster-container {
-          width: 297mm;
-          height: 420mm;
-          max-width: none;
-          margin: 0;
-          border-radius: 0;
-          box-shadow: none;
-        }
+      /* 模擬 A3 紙張比例 (297mm x 420mm -> 1:1.414) */
+      .poster-a3 {
+        width: 100%;
+        max-width: 800px; /* 螢幕預覽寬度 */
+        aspect-ratio: 1 / 1.414;
+        background: radial-gradient(
+          circle at center,
+          #b91c1c 0%,
+          #7f1d1d 60%,
+          #450a0a 100%
+        );
+        position: relative;
+        overflow: hidden;
+        border: 20px solid #b45309; /* 深金邊框 */
+        box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
+        display: flex;
+        flex-direction: column;
+      }
 
-        .poster-frame {
-          /* 仍然沿用原本 inset，但也可以改成 mm 精準控制 */
-          inset: 15mm;
-          border-radius: 10mm;
-        }
+      /* 內框紋飾 */
+      .inner-border {
+        flex: 1;
+        border: 4px solid #fca5a5;
+        margin: 10px;
+        border-radius: 4px;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 2rem;
+      }
 
-        .poster-inner {
-          /* 改成以 mm 為單位，更接近紙張排版概念 */
-          padding: 25mm 20mm 25mm;
-        }
+      /* 四角裝飾 (CSS模擬中式花窗角) */
+      .corner {
+        position: absolute;
+        width: 60px;
+        height: 60px;
+        border: 6px solid #fbbf24;
+        z-index: 1;
+      }
+      .corner-tl {
+        top: 10px;
+        left: 10px;
+        border-right: 0;
+        border-bottom: 0;
+      }
+      .corner-tr {
+        top: 10px;
+        right: 10px;
+        border-left: 0;
+        border-bottom: 0;
+      }
+      .corner-bl {
+        bottom: 10px;
+        left: 10px;
+        border-right: 0;
+        border-top: 0;
+      }
+      .corner-br {
+        bottom: 10px;
+        right: 10px;
+        border-left: 0;
+        border-top: 0;
+      }
+
+      /* 文字特效 */
+      .text-gold-gradient {
+        background: linear-gradient(
+          180deg,
+          #fffbeb 0%,
+          #fcd34d 40%,
+          #b45309 100%
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        filter: drop-shadow(2px 4px 0px rgba(0, 0, 0, 0.5));
+      }
+
+      .title-font {
+        font-family: var(--font-title);
+      }
+
+      /* 日期強調區塊 */
+      .date-box {
+        background-color: #fffbf0; /* 米白底，對比強 */
+        border: 4px solid #b45309;
+        border-radius: 16px;
+        color: #7f1d1d;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+      }
+
+      /* 項目清單樣式 */
+      .item-row {
+        border-bottom: 2px dashed rgba(252, 211, 77, 0.4);
+      }
+      .item-row:last-child {
+        border-bottom: none;
       }
     </style>
   </head>
-
   <body>
-    <main class="poster-container">
-      <div class="poster-frame"></div>
+    <div class="poster-a3">
+      <div class="corner corner-tl"></div>
+      <div class="corner corner-tr"></div>
+      <div class="corner corner-bl"></div>
+      <div class="corner corner-br"></div>
 
-      <div class="poster-inner flex flex-col gap-8 md:gap-10">
-        <!-- 頂部主標題 -->
-        <header class="text-center space-y-3">
-          <p
-            class="serif-bold text-sm md:text-base tracking-[0.55em] text-yellow-100"
+      <div class="inner-border">
+        <header class="text-center relative z-10 mt-4">
+          <div
+            class="inline-block bg-red-900 border border-yellow-500 px-6 py-2 rounded-full mb-4 shadow-lg"
           >
-            石 磊 里
-          </p>
+            <span
+              class="text-2xl md:text-3xl text-yellow-200 font-bold tracking-[0.2em]"
+              >石磊里大嶺頂</span
+            >
+          </div>
+
           <h1
-            class="serif-bold text-4xl md:text-6xl leading-tight gold-text tracking-[0.35em]"
+            class="title-font text-[8rem] md:text-[11rem] leading-none text-gold-gradient mb-2"
           >
-            大嶺頂土地公
+            土地公
           </h1>
-          <h2
-            class="serif-bold text-3xl md:text-4xl leading-tight gold-text tracking-[0.4em] mt-1"
-          >
-            三 週 年 慶
-          </h2>
 
-          <div class="section-divider mt-4 mb-1"></div>
+          <div class="flex items-center justify-center gap-4 mb-4">
+            <span class="h-[2px] w-12 bg-yellow-500"></span>
+            <h2
+              class="text-4xl md:text-5xl font-black text-white tracking-widest drop-shadow-md"
+            >
+              三週年慶
+            </h2>
+            <span class="h-[2px] w-12 bg-yellow-500"></span>
+          </div>
 
-          <p class="text-lg md:text-xl text-yellow-100">
-            敬邀善男信女&nbsp;共襄盛舉
-          </p>
+          <p class="text-2xl text-yellow-200 font-bold">恭祝 土地公 聖誕千秋</p>
         </header>
 
-        <!-- 日期區塊 -->
-        <section
-          class="card-bg rounded-2xl px-4 py-4 md:px-8 md:py-5 shadow-xl mx-auto w-full max-w-2xl"
-        >
-          <p
-            class="serif-bold text-xl md:text-2xl text-center text-red-900 mb-2 tracking-[0.25em]"
-          >
-            祈 福 保 庇 ・ 闔 家 平 安
-          </p>
-
+        <main class="flex-grow flex flex-col justify-center my-6">
           <div
-            class="mt-3 flex flex-col md:flex-row items-center justify-center gap-4 md:gap-12 text-base md:text-lg"
+            class="date-box p-6 text-center mx-auto w-full max-w-[90%] transform hover:scale-105 transition-transform duration-300"
           >
-            <div class="text-center">
-              <span class="font-bold block text-red-800 mb-1">國曆</span>
-              <span class="serif-bold text-xl md:text-2xl text-red-900"
-                >115 年 1 月 17 日（六）</span
+            <div class="flex justify-center items-end gap-2 leading-none">
+              <span class="text-4xl md:text-5xl font-bold text-gray-800 mb-4"
+                >國曆</span
+              >
+              <span
+                class="text-[5rem] md:text-[7rem] font-black text-red-700 leading-none"
+                >1/17</span
+              >
+              <span class="text-4xl md:text-5xl font-bold text-gray-800 mb-4"
+                >(六)</span
               >
             </div>
-            <div
-              class="hidden md:block h-10 w-px bg-gradient-to-b from-red-300 via-red-500 to-red-300"
-            ></div>
-            <div class="text-center">
-              <span class="font-bold block text-red-800 mb-1">農曆</span>
-              <span class="serif-bold text-xl md:text-2xl text-red-900"
-                >11 月 29 日（星期六）</span
+
+            <div class="border-t-2 border-red-200 pt-3 mt-2">
+              <p class="text-2xl md:text-3xl font-bold text-red-900">
+                農曆 乙巳年 十一月 廿九日
+              </p>
+            </div>
+          </div>
+
+          <div class="mt-10 px-4">
+            <div class="flex items-center gap-4 mb-6">
+              <div class="h-8 w-2 bg-yellow-400"></div>
+              <h3 class="text-3xl md:text-3xl font-black text-white">
+                平安饗宴
+              </h3>
+              <span class="text text-yellow-300 font-bold ml-auto"
+                >現場備有豐盛客家特色美食，歡迎大眾享用，吃平安、長智慧。</span
               >
             </div>
-          </div>
-        </section>
 
-        <!-- 土地公圖示＋標語 -->
-        <section
-          class="flex flex-col items-center justify-center mt-2 mb-1 space-y-3"
-        >
-          <div
-            class="w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-yellow-400/80 flex items-center justify-center bg-gradient-to-b from-yellow-200/80 to-yellow-500/90 shadow-2xl"
-          >
-            <i
-              class="fas fa-hand-holding-heart text-5xl md:text-6xl text-red-800"
-            ></i>
-          </div>
-          <p class="text-yellow-100 text-base md:text-lg">虔心一念・功德無量</p>
-        </section>
-
-        <div class="section-divider"></div>
-
-        <!-- 平安餐點 -->
-        <section class="space-y-4">
-          <h3
-            class="serif-bold text-2xl md:text-3xl gold-text text-center card-title"
-          >
-            現 場 備 有・平 安 饗 宴
-          </h3>
-          <p class="text-center text-yellow-100 text-sm md:text-base">
-            誠心備辦佳餚，與眾結緣同享，祈願平安順遂。
-          </p>
-
-          <div
-            class="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6 mt-3 md:mt-4"
-          >
-            <div
-              class="card-bg rounded-2xl px-4 py-4 md:px-6 md:py-6 shadow-lg flex flex-col items-center gap-2"
-            >
-              <div class="text-4xl md:text-5xl text-yellow-700 mb-1">
-                <i class="fas fa-drumstick-bite"></i>
-              </div>
-              <p class="serif-bold text-xl md:text-2xl tracking-[0.25em]">
-                控 肉
-              </p>
-            </div>
-            <div
-              class="card-bg rounded-2xl px-4 py-4 md:px-6 md:py-6 shadow-lg flex flex-col items-center gap-2"
-            >
-              <div class="text-4xl md:text-5xl text-yellow-700 mb-1">
-                <i class="fas fa-utensils"></i>
-              </div>
-              <p class="serif-bold text-xl md:text-2xl tracking-[0.25em]">
-                米 粉
-              </p>
-            </div>
-            <div
-              class="card-bg rounded-2xl px-4 py-4 md:px-6 md:py-6 shadow-lg flex flex-col items-center gap-2"
-            >
-              <div class="text-4xl md:text-5xl text-yellow-700 mb-1">
-                <i class="fas fa-cookie"></i>
-              </div>
-              <p class="serif-bold text-xl md:text-2xl tracking-[0.18em]">
-                客 家 麻 糬
-              </p>
-            </div>
-          </div>
-        </section>
-
-        <div class="section-divider"></div>
-
-        <!-- 捐款用途與功德金 -->
-        <section class="space-y-5">
-          <h3
-            class="serif-bold text-2xl md:text-3xl gold-text text-center card-title"
-          >
-            隨 喜 功 德 ・ 護 持 廟 宇
-          </h3>
-
-          <div
-            class="grid grid-cols-1 md:grid-cols gap-5 md:gap-7 items-stretch"
-          >
-            <!-- 捐款用途 + 建議功德金（合併） -->
-            <article
-              class="card-bg rounded-2xl px-5 py-6 md:px-7 md:py-7 shadow-xl border-l-4 border-red-800/80 flex flex-col gap-6"
-            >
-              <!-- 捐款用途 -->
-              <div>
-                <h4
-                  class="serif-bold text-xl text-red-900 mb-3 tracking-[0.15em]"
+            <div class="grid grid-cols-3 gap-4 text-center">
+              <div class="flex flex-col items-center">
+                <div
+                  class="bg-red-800 w-20 h-20 rounded-full flex items-center justify-center border-2 border-yellow-500 mb-3 shadow-lg"
                 >
-                  捐款用途
-                </h4>
-                <p class="text-sm md:text-base mb-3 text-red-900/90">
-                  本次捐款將專款用於廟宇基礎運作與環境維護，讓土地公庇佑香火綿延：
-                </p>
-                <ul class="space-y-2 text-sm md:text-base">
-                  <li class="flex items-start gap-2 flex-wrap">
-                    <span class="text-yellow-700 mt-[2px]">✦</span>
-                    <span>點燈祈福與長明燈維護</span>
-                    <span class="text-yellow-700 mt-[2px]">✦</span>
-                    <span>廟埕及周邊環境清潔整理</span>
-                    <span class="text-yellow-700 mt-[2px]">✦</span>
-                    <span>廟宇基礎設施保養與維修</span>
-                  </li>
-                </ul>
+                  <span
+                    class="fas fa-drumstick-bite text-4xl font-black text-white"
+                  ></span>
+                </div>
+                <p class="text-3xl font-bold text-yellow-100">控肉</p>
               </div>
-            </article>
+              <div class="flex flex-col items-center">
+                <div
+                  class="bg-red-800 w-20 h-20 rounded-full flex items-center justify-center border-2 border-yellow-500 mb-3 shadow-lg"
+                >
+                  <span
+                    class="fas fa-utensils text-4xl font-black text-white"
+                  ></span>
+                </div>
+                <p class="text-3xl font-bold text-yellow-100">米粉</p>
+              </div>
+              <div class="flex flex-col items-center">
+                <div
+                  class="bg-red-800 w-20 h-20 rounded-full flex items-center justify-center border-2 border-yellow-500 mb-3 shadow-lg"
+                >
+                  <span
+                    class="fas fa-cookie text-4xl font-black text-white"
+                  ></span>
+                </div>
+                <p class="text-3xl font-bold text-yellow-100">客家麻糬</p>
+              </div>
+            </div>
           </div>
-        </section>
+        </main>
 
-        <!-- 底部結尾 -->
-        <footer class="text-center mt-4">
-          <p class="serif-bold text-2xl md:text-3xl gold-text mb-3">
-            石磊里大嶺頂土地公 敬邀
-          </p>
-          <p class="text-base md:text-xl text-yellow-100 mb-1">
-            祈願風調雨順、里民安康、家家平安吉祥
-          </p>
-          <p class="serif-bold text-3xl md:text-4xl gold-text tracking-[0.4em]">
-            功 德 無 量
-          </p>
+        <footer class="mt-auto">
+          <div class="mt-10 px-4">
+            <div class="flex items-center gap-4 mb-3">
+              <div class="h-8 w-2 bg-yellow-400"></div>
+              <h3 class="text-3xl md:text-3xl font-black text-white">
+                功德金用途
+              </h3>
+
+              <span class="text text-yellow-300 font-bold ml-auto">
+                用於廟宇修繕、環境維護、點燈供奉。</span
+              >
+            </div>
+          </div>
+
+          <div class="text-center border-t border-yellow-600/50 pt-3">
+            <p class="text text-white font-bold">管理委員會 全體委員 敬邀</p>
+          </div>
         </footer>
       </div>
-    </main>
+    </div>
   </body>
 </html>
